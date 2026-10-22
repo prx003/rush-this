@@ -1,17 +1,11 @@
-import { Outlet, createFileRoute, redirect, useRouterState, Link } from "@tanstack/react-router";
+import { Outlet, createFileRoute, useRouterState, Link } from "@tanstack/react-router";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { MobileNav } from "@/components/layout/mobile-nav";
-import { supabase } from "@/integrations/supabase/client";
 import { AuthProvider, useAuth, canAccess } from "@/lib/auth";
 
 export const Route = createFileRoute("/_app")({
   ssr: false,
-  beforeLoad: async () => {
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) throw redirect({ to: "/auth" });
-    return { user: data.user };
-  },
   component: AppLayout,
 });
 

@@ -95,9 +95,7 @@ function persist() {
     window.localStorage.setItem(KEY, JSON.stringify(state));
     if (cloudTimer) clearTimeout(cloudTimer);
     cloudTimer = setTimeout(async () => {
-      const { data: u } = await supabase.auth.getUser();
-      if (!u.user) return;
-      await supabase.from("app_state").upsert({ key: KEY, value: state as never, updated_by: u.user.id, updated_at: new Date().toISOString() });
+      await supabase.from("app_state").upsert({ key: KEY, value: state as never, updated_by: null, updated_at: new Date().toISOString() });
     }, 600);
   }
   listeners.forEach((l) => l());
