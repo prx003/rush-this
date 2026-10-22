@@ -31,12 +31,10 @@ export function useCloudState<T>(key: string, initial: T): [T, Dispatch<SetState
     if (!loaded.current) return;
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(async () => {
-      const { data: u } = await supabase.auth.getUser();
-      if (!u.user) return;
       await supabase.from("app_state").upsert({
         key,
         value: value as never,
-        updated_by: u.user.id,
+        updated_by: null,
         updated_at: new Date().toISOString(),
       });
     }, 600);

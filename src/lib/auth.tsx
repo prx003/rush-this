@@ -1,6 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import type { User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { createContext, useContext, type ReactNode } from "react";
 
 export type AppRole =
   | "admin" | "principal" | "hr" | "academic" | "admissions"
@@ -33,28 +31,13 @@ export function canAccess(roles: AppRole[], path: string) {
   });
 }
 
-type AuthState = { user: User | null; roles: AppRole[]; loading: boolean };
-const Ctx = createContext<AuthState>({ user: null, roles: [], loading: true });
+type AuthState = { user: null; roles: AppRole[]; loading: boolean };
+// No sign-in: everyone gets full access to every section.
+const OPEN: AuthState = { user: null, roles: ["principal"], loading: false };
+const Ctx = createContext<AuthState>(OPEN);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AuthState>({ user: null, roles: [], loading: true });
-
-  useEffect(() => {
-    const load = async (user: User | null) => {
-      if (!user) return setState({ user: null, roles: [], loading: false });
-      const { data } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
-      setState({ user, roles: (data ?? []).map((r) => r.role as AppRole), loading: false });
-    };
-    supabase.auth.getUser().then(({ data }) => load(data.user));
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") {
-        setTimeout(() => load(session?.user ?? null), 0);
-      }
-    });
-    return () => sub.subscription.unsubscribe();
-  }, []);
-
-  return <Ctx.Provider value={state}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={OPEN}>{children}</Ctx.Provider>;
 }
 
 export const useAuth = () => useContext(Ctx);
