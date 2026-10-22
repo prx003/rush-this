@@ -104,8 +104,8 @@ const ROLE_SECTIONS: Record<AppRole, string[] | "all"> = {
 };
 
 function Dashboard() {
-  const { user, roles } = useAuth();
-  const name = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "there";
+  const { roles } = useAuth();
+  const name = "there";
   const roleLabel = roles.map((r) => ROLE_LABELS[r]).join(" · ") || "Staff";
 
   const modules = MODULES.filter((m) => canAccess(roles, m.to));
