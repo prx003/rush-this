@@ -16,3 +16,4 @@
 - No sign-in: the `_app` layout is open and `src/lib/auth.tsx` grants every visitor full section access; `app_state` is readable/writable by anonymous visitors. Why: the owner asked to remove the login system.
 - Module state persists via `useCloudState(key, initial)` into the shared `app_state` JSON table. Why: lets existing in-memory stores save without per-module schemas.
 - Use the shared `ModuleShell` for College Portal, Marketing, Placement and Governance navigation, with global semantic module tokens; this keeps presentation consistent while leaving each module's role state isolated.
+- Keep Skill AI admissions components under `src/components/sales/admissions/`, with a shared cloud-backed context inside Sales and the public application page; this connects the dossier and finance workflow without changing existing Sales data or navigation styling.
