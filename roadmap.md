@@ -7,3 +7,5 @@
 - [x] Save HR, Sales, College Portal, Governance and Marketing data to Lovable Cloud.
 - [x] Match College Portal, Marketing, Placement, and Governance to the existing application UI without changing their workflows.
 - [x] Check all four workspaces while signed in.
+- [ ] Add the Skill AI eight-section application form and Sales admissions workspace without redesigning Sales.
+- [ ] Connect application submissions, independent signoffs, finance ledger, course fees and lead sharing; verify persistence and workflows.
